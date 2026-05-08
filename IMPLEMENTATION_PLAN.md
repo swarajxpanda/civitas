@@ -34,6 +34,21 @@ Living Civilization Ecosystem
 
 ---
 
+## Current Phase — 
+- [x] Phase 0 - Core Simulation
+- [ ] Phase 1 - Resource Pressure & Survival
+- [ ] Phase 2 - Adaptive Learning
+- [ ] Phase 3 - Probabilistic Decisions
+- [ ] Phase 4 - Persistent Memory
+- [ ] Phase 5 - Relationship Systems
+- [ ] Phase 6 - Advanced Economics
+- [ ] Phase 7 - Territory & Geography
+- [ ] Phase 8 - Evolutionary Intelligence
+- [ ] Phase 9 - Handwritten Neural Networks
+- [ ] Phase 10 - Living Civilization Ecosystem
+
+---
+
 ## Phases
 
 ---
