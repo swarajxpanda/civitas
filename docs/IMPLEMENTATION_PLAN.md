@@ -1,168 +1,140 @@
-## Phases
+# CIVITAS Implementation Plan
 
-### Phase 0 — Foundational Architecture
+This document tracks the build-out of the simulation from the current engine foundation toward agent-driven civilization behavior.
 
-Transform the current procedural script into a scalable simulation engine.
+## Completed Phases
 
-**World Controller** (`world.py`) — owns all civilizations, advances turns, resolves actions, stores history, manages the simulation clock.
+- [x] Phase 0 - Foundational Architecture
+- [x] Phase 1 - Survival Systems
 
-**Civilization Class** (`civilization.py`) — each civilization holds its own state, personality traits, memory, relationships, and learning variables.
+These are the milestones already implemented in the codebase.
 
-**Event System** (`event.py`) — all meaningful interactions become structured events. Events form the world history, training data, replay system, and analytics layer.
+## Phase 0 - Foundational Architecture
 
-**History Logger** (`logger.py`) — appends events, saves timelines, generates historical archives.
+Status: complete
 
-**Save/Load System** (`storage.py`) — starts with JSON, later moves to SQLite and compressed saves.
+Goal: turn the original procedural script into a maintainable simulation engine.
 
----
+Completed work:
+- world controller that owns civilizations and advances turns
+- civilization model with state and decision weights
+- structured event objects for all meaningful outcomes
+- history logging for turn-by-turn simulation output
+- JSON storage scaffolding for future persistence
+- project layout split into `core/`, `systems/`, `agents/`, `memory/`, `rl/`, `data/`, and `logs/`
 
-### Phase 1 — Survival Systems
+## Phase 1 - Survival Systems
 
-Introduce scarcity and collapse. Civilizations must struggle to survive.
+Status: complete
 
-- Population consumes food and resources
-- Military consumes upkeep and equipment
-- Prosperity drives population growth and economic expansion
-- Scarcity causes starvation, instability, and collapse
-- Civilizations can permanently die — dead civilizations remain in the history archive
+Goal: introduce scarcity, pressure, and collapse so civilizations can actually fail.
 
----
+Completed work:
+- population consumes food and resources over time
+- military consumes upkeep
+- prosperity can support population growth
+- scarcity creates starvation and instability
+- civilizations can collapse permanently
+- dead civilizations remain in the history archive
 
-### Phase 2 — Feature Engineering and RL Loop (Early Training)
+## Phase 2 - Feature Engineering and RL Loop
 
-This is the earliest point at which training is viable. The world exists, rewards exist, and state is meaningful — so training starts here.
+Status: planned
 
-Each turn is structured as a standard RL transition:
+Goal: turn the simulation into a Gym-compatible environment where each turn becomes a standard RL transition:
 
-```
+```text
 state -> action -> outcome -> reward
 ```
 
-World state is encoded as a flat feature vector per civilization:
+Planned work:
+- encode each civilization as a flat feature vector
+- define reward signals for survival, growth, and strategic success
+- wrap the world as an environment for training
+- integrate `stable-baselines3` or an equivalent RL pipeline
 
-```
-[resources, military, population, territory, food_level,
- economic_stability, enemy_strength, trust_scores, aggression_index]
-```
+## Phase 3 - Adaptive Agents
 
-Training uses `stable-baselines3` with a simple MLP policy. The simulation runs as a Gym-compatible environment. No handwriting networks, no reinventing infrastructure — get signal fast and iterate.
+Status: planned
 
-The agent learns from this environment directly. Everything added in later phases enriches the state space and improves the policy automatically.
+Goal: keep rule-based agents competitive while RL matures.
 
----
+Planned work:
+- track action outcomes per civilization
+- tune preferences based on success and failure
+- let agents drift toward militarism, trade, expansion, or isolationism
 
-### Phase 3 — Adaptive Agents (Rule-Based Baseline)
+## Phase 4 - Memory and Relationships
 
-While RL trains in the background, rule-based agents serve as a baseline and opponent pool.
+Status: planned
 
-Each action type is tracked. Successful actions increase preference; failed actions decrease it. Over time, rule-based agents drift toward militarism, trade, expansion, or isolationism — without explicit scripting. These agents generate experience data and act as opponents during early RL training.
+Goal: give civilizations memory across multiple timescales.
 
----
+Planned work:
+- short-term memory for recent events
+- long-term relationship tracking
+- permanent historical archive
+- memory features exposed to the policy/state vector
 
-### Phase 4 — Memory and Relationships
+## Phase 5 - Economic Specialization
 
-Civilizations remember history across three layers.
+Status: planned
 
-- **Short-term memory** — recent interactions and events
-- **Long-term memory** — per-civilization relationship tracking (trust, wars, trades)
-- **Historical archive** — a permanent, immutable global timeline
+Goal: replace generic resources with a richer economy.
 
-Memory values are added directly to the feature vector, enriching what the RL policy can observe and reason over.
+Planned work:
+- food, gold, industry, energy, technology
+- shortages and dependencies
+- trade identities and specialization
 
----
+## Phase 6 - World Generation
 
-### Phase 5 — Economic Specialization
+Status: planned
 
-Replace generic resources with real economies: food, gold, industry, energy, technology.
+Goal: add geography and terrain.
 
-Civilizations develop shortages, dependencies, and trade identities. Emergent outcomes include trade empires, industrial powers, starving militarists, and technological civilizations. Each new resource dimension extends the feature vector and expands the action space the policy must learn.
+Planned work:
+- procedural maps
+- continents, climates, terrain, and resource zones
+- spatial constraints on economy and warfare
 
----
+## Phase 7 - Evolutionary Systems
 
-### Phase 6 — World Generation
+Status: planned
 
-Introduce geography through procedural map generation — continents, terrain, climates, resource zones. Civilizations occupy tiles. Terrain shapes economy, warfare, expansion, and trade routes.
+Goal: let strategies survive, mutate, and inherit over time.
 
-Geographic features are encoded and appended to the state vector, giving the policy spatial context for decision-making.
+Planned work:
+- mutation of behavioral traits
+- inheritance from successful civilizations
+- survival-based selection pressure
 
----
+## Phase 8 - Advanced RL and Self-Play
 
-### Phase 7 — Evolutionary Systems
+Status: planned
 
-Strategies evolve genetically over time.
+Goal: improve training once the state space is rich enough.
 
-- Traits drift through random mutation
-- New civilizations inherit strategies, personalities, and tendencies from predecessors
-- Successful strategies survive longer; weak ones disappear naturally
+Planned work:
+- self-play against past policies
+- population-based training
+- curriculum learning
+- possible recurrent policies for memory-heavy behavior
 
-Evolutionary pressure acts as a second optimization loop running alongside RL — policies that win produce more offspring.
+## Phase 9 - Emergent Civilization Ecosystem
 
----
+Status: planned
 
-### Phase 8 — Advanced RL and Self-Play
+Goal: scale into a living world of alliances, migrations, collapses, and historical eras.
 
-With a rich state space now in place, move to more powerful training regimes.
+Planned work:
+- many civilizations
+- coalitions and rival blocs
+- large-scale historical timelines
+- emergent narrative over long simulation runs
 
-- Self-play: RL agents compete against past versions of themselves
-- Population-based training: multiple policies evolve in parallel
-- Curriculum learning: agents face progressively harder opponents and scenarios
+## Notes
 
-Policy architecture can be upgraded here — from MLP to recurrent (LSTM) if memory-dependent behavior improves performance.
-
----
-
-### Phase 9 — Emergent Civilization Ecosystem
-
-Scale into a living world with many civilizations, alliances, coalitions, migrations, collapses, and historical eras. History becomes emergent narrative — timelines, empires, dynasties, wars, economic collapses — generated entirely from agent behavior.
-
----
-
-## Directory Structure
-
-```
-civitas/
-│
-├── main.py                   # Entry point
-│
-├── core/                     # Simulation engine
-│   ├── world.py
-│   ├── civilization.py
-│   ├── event.py
-│   ├── clock.py
-│   └── storage.py
-│
-├── systems/                  # Game systems
-│   ├── economy.py
-│   ├── warfare.py
-│   ├── survival.py
-│   ├── relationships.py
-│   └── geography.py
-│
-├── agents/                   # Decision-making
-│   ├── rule_based.py
-│   ├── rl_agent.py
-│   └── evolution.py
-│
-├── rl/                       # Reinforcement learning
-│   ├── env.py                # Gym environment wrapper
-│   ├── features.py           # Feature engineering
-│   ├── rewards.py            # Reward functions
-│   └── trainer.py
-│
-├── memory/                   # Memory systems
-│   ├── short_term.py
-│   ├── long_term.py
-│   └── archive.py
-│
-├── data/                     # Persistence
-│   ├── world.json
-│   ├── history.json
-│   └── civilizations.json
-│
-├── logs/
-│   └── simulation.log
-│
-└── visualizer/
-    ├── map_renderer.py
-    └── timeline_viewer.py
-```
+- The repository is intentionally kept pure Python for now.
+- Persistence, agents, and RL scaffolding exist so later phases can grow without another rewrite.
+- The implementation plan should stay aligned with the current engine rather than the original one-file prototype.
