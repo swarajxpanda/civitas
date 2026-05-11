@@ -1,118 +1,102 @@
 # CIVITAS
-### Adaptive Civilization Intelligence Simulator
+Adaptive Civilization Intelligence Simulator
 
-CIVITAS is a pure Python experimental simulation framework focused on emergent civilization behavior, adaptive strategy, and evolutionary decision-making.
+CIVITAS is a pure Python simulation project for exploring how civilizations behave under pressure, adapt over time, and collapse when survival conditions fail.
 
-The project simulates autonomous civilizations operating inside a dynamic world environment. Each civilization evaluates its state, makes strategic decisions, and adapts behavior over time based on outcomes and survival success.
+The current engine models a small world of autonomous civilizations that choose actions, consume resources, manage military upkeep, and respond to scarcity. The longer-term goal is to grow this into a full agent-driven ecosystem with memory, history, evolution, and reinforcement learning.
 
-Unlike traditional rule-based simulations, CIVITAS is designed around evolving intelligence systems implemented manually using mathematics, probabilistic logic, and custom learning algorithms.
+## What the simulation does
 
----
+Each turn, every civilization:
+- evaluates its current state
+- scores possible actions
+- chooses an action
+- pays the consequences
+- updates its survival outlook
 
-# Core Concept
+The current action set includes:
+- `ATTACK`
+- `TRADE`
+- `EXPAND`
+- `GATHER`
 
-Two or more civilizations exist in a simulated environment.
+The survival layer adds:
+- food consumption
+- resource consumption
+- military upkeep
+- prosperity-based growth
+- scarcity penalties
+- permanent collapse
 
-Every simulation turn, each civilization:
-- observes the world state
-- evaluates strategic options
-- selects an action
-- experiences consequences
-- adapts future behavior
+## Current focus
 
-Actions may include:
-- attacking rivals
-- trading resources
-- expanding territory
-- gathering resources
-- investing in growth
+The project is still early, but the foundation is real now:
+- Phase 0: core world engine, events, history, and storage scaffolding
+- Phase 1: survival systems, starvation, upkeep, prosperity, and death handling
 
-Over time, civilizations develop emergent behavioral patterns:
-- militaristic empires
-- resource hoarders
-- expansionist states
-- peaceful traders
-- unstable collapsing societies
+That means the simulation now produces a readable turn-by-turn event stream and a live world state that can be extended into future agents and training loops.
 
-The long-term objective is to create adaptive artificial agents capable of evolving strategies without relying on external machine learning frameworks.
+## Project structure
 
----
+```text
+.
+├── main.py
+├── core/
+│   ├── world.py
+│   ├── civilization.py
+│   ├── event.py
+│   ├── clock.py
+│   ├── logger.py
+│   └── storage.py
+├── systems/
+│   ├── economy.py
+│   ├── warfare.py
+│   └── survival.py
+├── agents/
+│   ├── rule_based.py
+│   ├── rl_agent.py
+│   └── evolution.py
+├── rl/
+│   ├── env.py
+│   ├── features.py
+│   ├── rewards.py
+│   └── trainer.py
+├── memory/
+│   ├── short_term.py
+│   ├── long_term.py
+│   └── archive.py
+├── data/
+└── logs/
+```
 
-# Technical Goals
-
-- Pure Python implementation
-- No black-box ML libraries
-- Handwritten learning systems
-- Emergent behavior generation
-- Evolutionary strategy adaptation
-- Reinforcement-style feedback loops
-- Procedural historical simulation
-
----
-
-# Planned Systems
-
-## Simulation Engine
-- turn-based world progression
-- resource economy
-- territory control
-- population dynamics
-- military systems
-
-## Decision Intelligence
-- weighted strategic scoring
-- adaptive behavior tuning
-- reward and penalty systems
-- probabilistic action selection
-
-## Evolutionary Learning
-- mutation of behavioral parameters
-- inheritance of successful traits
-- survival-based optimization
-- long-term strategic adaptation
-
-## Historical Generation
-- procedural event logging
-- war histories
-- civilization collapse tracking
-- emergent geopolitical narratives
-
----
-
-# Initial Scope
-
-Version 1 focuses on:
-- 2 civilizations
-- 4 possible actions:
-  - ATTACK
-  - TRADE
-  - EXPAND
-  - GATHER
-- turn-based simulation
-- adaptive strategic weights
-- primitive learning behavior
-
----
-
-# Long-Term Vision
-
-CIVITAS aims to evolve into a self-contained artificial civilization ecosystem where intelligent agents compete, cooperate, adapt, and evolve over thousands of simulated years.
-
-The project serves both as:
-- a systems programming challenge
-- a foundational exploration of artificial intelligence and emergent complexity
-
----
-
-# Tech Stack
+## Tech stack
 
 - Python 3
 - Standard library only
-- Manual mathematical implementations
-- No external ML frameworks
+- No external ML dependencies yet
+- Designed to support later RL and agent integration
 
----
+## How to run
 
-# Status
+```bash
+python main.py
+```
 
-Early architectural prototyping.
+That will run a short two-civilization simulation and print each turn's events followed by the resulting world state.
+
+## Roadmap
+
+- Phase 0: world controller, civilization model, event logging, persistence scaffolding
+- Phase 1: survival systems and collapse behavior
+- Phase 2: feature engineering and RL environment
+- Phase 3: adaptive rule-based agents
+- Phase 4: memory and relationships
+- Phase 5: economic specialization
+- Phase 6: world generation
+- Phase 7: evolutionary systems
+- Phase 8: advanced RL and self-play
+- Phase 9: emergent civilization ecosystem
+
+## Status
+
+Early architectural foundation complete. The simulation now runs through a structured engine instead of a single procedural script.
